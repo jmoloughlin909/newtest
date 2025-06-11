@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Financial Trivia Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f4f8;
+            text-align: center;
+            padding: 40px;
+        }
+        
+        h1 {
+            color: #2c3e50;
+        }
+        
+        .question-box {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px auto;
+            max-width: 600px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .answers button {
+            display: block;
+            margin: 10px auto;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            background-color: #3498db;
+            color: white;
+            cursor: pointer;
+        }
+        
+        .answers button:hover {
+            background-color: #2980b9;
+        }
+        
+        .result {
+            font-size: 1.2em;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+        
+        .score {
+            margin-top: 10px;
+        }
+        
+        .next-btn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #2ecc71;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        
+        .next-btn:hover {
+            background-color: #27ae60;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Financial Literacy Trivia</h1>
+    <div class="question-box">
+        <div id="question">Loading question...</div>
+        <div class="answers" id="answers"></div>
+        <div class="result" id="result"></div>
+        <div class="score" id="score">Score: 0</div>
+        <button class="next-btn" onclick="nextQuestion()">Next Question</button>
+    </div>
+
+    <script>
+        const questions = [{
+            question: "What does a credit score represent?",
+            answers: [
+                "Your annual income",
+                "Your ability to pay taxes",
+                "Your trustworthiness to repay debt",
+                "Your total assets"
+            ],
+            correct: 2
+        }, {
+            question: "What is a 401(k)?",
+            answers: [
+                "A type of insurance plan",
+                "A retirement savings plan",
+                "A type of credit card",
+                "A real estate investment"
+            ],
+            correct: 1
+        }, {
+            question: "Which of these is NOT a stock market index?",
+            answers: [
+                "NASDAQ",
+                "Dow Jones",
+                "S&P 500",
+                "FDIC"
+            ],
+            correct: 3
+        }, {
+            question: "What does APR stand for?",
+            answers: [
+                "Annual Percentage Rate",
+                "Applied Payment Rate",
+                "Average Payback Ratio",
+                "Account Performance Rating"
+            ],
+            correct: 0
+        }, {
+            question: "What is diversification in investing?",
+            answers: [
+                "Putting all your money in one stock",
+                "Spreading investments across various assets",
+                "Only investing in foreign currency",
+                "Selling your investments quickly"
+            ],
+            correct: 1
+        }];
+
+        let currentQuestion = 0;
+        let score = 0;
+
+        function showQuestion() {
+            const q = questions[currentQuestion];
+            document.getElementById("question").textContent = q.question;
+            const answersDiv = document.getElementById("answers");
+            answersDiv.innerHTML = "";
+
+            q.answers.forEach((answer, index) => {
+                const btn = document.createElement("button");
+                btn.textContent = answer;
+                btn.onclick = () => checkAnswer(index);
+                answersDiv.appendChild(btn);
+            });
+
+            document.getElementById("result").textContent = "";
+        }
+
+        function checkAnswer(selected) {
+            const correct = questions[currentQuestion].correct;
+            const result = document.getElementById("result");
+            if (selected === correct) {
+                result.textContent = "✅ Correct!";
+                score++;
+            } else {
+                result.textContent = `❌ Incorrect. The correct answer was: "${questions[currentQuestion].answers[correct]}"`;
+            }
+            document.getElementById("score").textContent = `Score: ${score}`;
+        }
+
+        function nextQuestion() {
+            currentQuestion++;
+            if (currentQuestion < questions.length) {
+                showQuestion();
+            } else {
+                document.getElementById("question").textContent = "Game Over!";
+                document.getElementById("answers").innerHTML = "";
+                document.getElementById("result").textContent = `Final Score: ${score}/${questions.length}`;
+                document.querySelector(".next-btn").style.display = "none";
+            }
+        }
+
+        showQuestion();
+    </script>
+
+</body>
+
+</html>
